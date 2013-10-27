@@ -7,13 +7,15 @@ module Chordpro
     end
 
     def to_s
-      @song.elements.map do |element|
-        send method_for_element(element), element
-      end.join("\n")
+      @song.elements.map { |e| element(e) }.join("\n")
+    end
+
+    def element(element)
+      send method_for_element(element), element
     end
 
     def directive(directive)
-      send directive.name, directive #if respond_to?(directive.name)
+      send directive.name, directive if respond_to?(directive.name)
     end
 
     def title(directive)
@@ -34,7 +36,7 @@ module Chordpro
       line.elements.each do |element|
         if element.is_a?(Sexp::Lyric)
           lyrics << element
-        else
+        elsif element.is_a?(Sexp::Chord)
           chords[lyrics.size] = element
         end
       end
@@ -45,6 +47,15 @@ module Chordpro
         lyrics.map {|l| "<td>#{l}</td>" }.join
       }</tr></table>|
     end
+
+    def newline(_)
+      '<br>'
+    end
+
+    def comment(directive)
+      %|<span class="comment">#{directive.value}</span>|
+    end
+    alias_method :c, :comment
 
     private
 

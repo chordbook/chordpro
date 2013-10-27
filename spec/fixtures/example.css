@@ -1,0 +1,13 @@
+body {
+  font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+  font-size: 13px;
+  padding: 20px;
+}
+
+.comment {
+  color: #999;
+}
+
+.chords {
+  font-weight: bold;
+}
