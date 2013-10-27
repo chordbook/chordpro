@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Chordpro::Parser do
-  before :all do
-    @fixture = File.read(File.expand_path('../../fixtures/workspace.crd', __FILE__))
-  end
-
   def parse(string)
     Chordpro::Parser.parse(string)
   end
