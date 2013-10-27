@@ -1,5 +1,3 @@
 require "chordpro/version"
-
-module Chordpro
-  # Your code goes here...
-end
+require "chordpro/parser"
+require "chordpro/html"

@@ -1,0 +1,25 @@
+grammar Sexp
+  rule song
+    (directive / newline)* <Song>
+  end
+
+  rule directive
+    '{' space? identifier space? ':'? space? directive_value? '}' <Directive>
+  end
+
+  rule identifier
+     [a-zA-Z\=\*] [a-zA-Z0-9_\=\*]* <Identifier>
+  end
+
+  rule directive_value
+    (!'}' .)* <DirectiveValue>
+  end
+
+  rule newline
+    [\n] <Newline>
+  end
+
+  rule space
+    [\s]+
+  end
+end
