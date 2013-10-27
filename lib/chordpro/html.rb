@@ -27,6 +27,25 @@ module Chordpro
     alias_method :st, :subtitle
     alias_method :su, :subtitle
 
+    def line(line)
+      chords = []
+      lyrics = []
+
+      line.elements.each do |element|
+        if element.is_a?(Sexp::Lyric)
+          lyrics << element
+        else
+          chords[lyrics.size] = element
+        end
+      end
+
+      %Q|<table><tr class="chords">#{
+        chords.map {|l| "<td>#{l}</td>" }.join
+      }</tr><tr>#{
+        lyrics.map {|l| "<td>#{l}</td>" }.join
+      }</tr></table>|
+    end
+
     private
 
     def method_for_element(element)

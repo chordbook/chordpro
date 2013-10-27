@@ -22,4 +22,22 @@ module Sexp
 
   class Newline < Treetop::Runtime::SyntaxNode
   end
+
+  class Line < Treetop::Runtime::SyntaxNode
+  end
+
+  class Chord < Treetop::Runtime::SyntaxNode
+    def to_s
+      elements.first.text_value
+    end
+  end
+
+  class ChordName < Treetop::Runtime::SyntaxNode
+  end
+
+  class Lyric < Treetop::Runtime::SyntaxNode
+    def to_s
+      text_value
+    end
+  end
 end

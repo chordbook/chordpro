@@ -17,4 +17,11 @@ describe Chordpro::HTML do
     end
   end
 
+  it "renders line" do
+    expect(html("[G7]I dreamed I [C]held you in my [G]arms").to_s).to eq(
+      '<table><tr class="chords"><td>G7</td><td>C</td><td>G</td></tr>' +
+      '<tr><td>I dreamed I </td><td>held you in my </td><td>arms</td></tr></table>'
+    )
+  end
+
 end
