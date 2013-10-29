@@ -1,25 +1,36 @@
-require 'treetop'
-require 'chordpro/node_extensions'
+require 'parslet'
 
 module Chordpro
-  class Parser
-    class ParseError < Exception
+  class Parser < Parslet::Parser
+    # Characters
+    rule(:space)    { match('\s').repeat }
+    rule(:colon)    { space >> str(':') >> space }
+    rule(:newline)  { str("\n") }
+    rule(:lbrace)   { str('{') }
+    rule(:rbrace)   { str('}') }
+    rule(:lbracket) { str('[') }
+    rule(:rbracket) { str(']') }
+
+
+    rule(:identifier) { match['a-z'].repeat(1) }
+    rule(:value) { (rbrace.absent? >> any).repeat }
+
+    rule(:directive) do
+      lbrace >> space >>
+      identifier.as(:name) >>
+      (
+        space >> colon >> space >>
+        value.as(:value)
+      ).maybe >>
+      rbrace
     end
 
-    Treetop.load(File.expand_path('../sexp_parser.treetop', __FILE__))
-    @@parser = SexpParser.new
+    rule(:chord) { lbracket >> (rbracket.absent? >> any).repeat.as(:chord) >> rbracket }
+    rule(:lyric) { (lbracket.absent? >> newline.absent? >> any).repeat(1).as(:lyric) }
+    rule(:line)  { (chord | lyric).repeat(1).as(:line) >> newline.maybe }
 
-    def self.parse(data)
-      tree = @@parser.parse(data)
-      raise ParseError, "Parse error at offset: #{@@parser.index}" if(tree.nil?)
-      clean_tree(tree)
-    end
+    rule(:song)  { directive | newline.as(:newline) | line }
 
-    def self.clean_tree(root_node)
-      return if(root_node.elements.nil?)
-      root_node.elements.delete_if{|node| node.class.name == "Treetop::Runtime::SyntaxNode" }
-      root_node.elements.each {|node| self.clean_tree(node) }
-      root_node
-    end
+    root(:song)
   end
 end

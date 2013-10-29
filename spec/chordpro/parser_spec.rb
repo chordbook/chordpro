@@ -1,33 +1,111 @@
 require 'spec_helper'
+require 'parslet/rig/rspec'
 
 describe Chordpro::Parser do
-  def parse(string)
-    Chordpro::Parser.parse(string)
+  let(:parser) { Chordpro::Parser.new }
+
+  subject { parser.send self.class.description }
+
+  describe 'space' do
+    it { should parse(' ') }
+    it { should parse('   ') }
+    it { should parse('') }
+    it { should_not parse('x') }
   end
 
-  it 'parses a title' do
-    directive = parse("{ title : foobar }").elements.first
-
-    expect(directive).to be_kind_of(Sexp::Directive)
-    expect(directive.name).to eq('title')
-    expect(directive.value).to eq('foobar')
+  describe 'colon' do
+    it { should parse(':') }
+    it { should_not parse('x') }
   end
 
-  %w(A Bb C# Dm Edim Fmaj Gsus2 A/C#).each do |chord|
-    it "parses #{chord} as a chord" do
-      line = parse("[#{chord}]\n").elements.first
+  describe 'newline' do
+    it { should parse("\n") }
+    it { should_not parse("x") }
+  end
 
-      expect(line).to be_kind_of(Sexp::Line)
-      expect(line.elements.first).to be_kind_of(Sexp::Chord)
+  describe 'lbrace' do
+    it { should parse("{") }
+    it { should_not parse("[") }
+  end
+
+  describe 'rbrace' do
+    it { should parse("}") }
+    it { should_not parse("]") }
+  end
+
+  describe 'lbracket' do
+    it { should parse("[") }
+    it { should_not parse("{") }
+  end
+
+  describe 'rbracket' do
+    it { should parse("]") }
+    it { should_not parse("}") }
+  end
+
+  describe 'identifier' do
+    it { should parse('title') }
+    it { should parse('t') }
+    it { should_not parse(' abcdef') }
+    it { should_not parse(' ') }
+    it { should_not parse('') }
+  end
+
+  describe 'value' do
+    it { should parse('some value') }
+    it { should parse(' ahoy ').as(' ahoy ') }
+    it { should_not parse('oops}') }
+  end
+
+  describe 'directive' do
+    it { should parse('{title:Royals}').as(:name => 'title', :value => 'Royals') }
+    # FIXME: remove trailing space from value
+    it { should parse('{ title : Get Lucky }').as({:name => 'title', :value => 'Get Lucky '}) }
+    it { should parse('{soc}').as(:name => 'soc') }
+    it { should_not parse('{st:oops') }
+  end
+
+  describe 'chord' do
+    %w(A Bb C# Dm Edim Fmaj Gsus2 A/C#).each do |chord|
+      it { should parse("[#{chord}]").as(:chord => chord) }
     end
+
+    it { should_not parse('[G') }
   end
 
-  it "parses a line with chords" do
-    line = parse("[G7]You make me [C]happy when skies are [G]gray").elements.first
+  describe 'lyric' do
+    it { should parse("I've never seen") }
+    it { should parse(" a diamond in the ")}
+    it { should_not parse("in the[") }
+    it { should_not parse("in the\n") }
+  end
 
-    expect(line.elements.size).to eq(6)
-    # expect(line.elements[0]).to be_kind_of(Sexp::Chord)
-    # expect(line.elements[1]).to be_kind_of(Sexp::Lyric)
+  describe 'line' do
+    it { should parse("[G]You are my sunshine").as(:line => [{:chord => 'G'}, {:lyric => 'You are my sunshine'}]) }
+    it { should parse("You make me [C]happy when skies are [G]gray").as(:line => [
+      {:lyric => 'You make me '},
+      {:chord => 'C'},
+      {:lyric => 'happy when skies are '},
+      {:chord => 'G'},
+      {:lyric => 'gray'}
+    ]) }
+
+    it { should parse("words with a newline\n").as(:line => [{:lyric => "words with a newline"}]) }
+    it { should_not parse("foo\nbar") }
+  end
+
+  describe 'song' do
+    it do
+      song = "{title: I'll Fly Away}\n\n[C]I'll fly away, [C7]oh, glory\n[F]I'll fly [C]away\n"
+      should parse(song).as(:song => [
+        {:directive => {:name => "title", :value => "I'll Fly Away"}},
+        {:newline => "\n" },
+        {:newline => "\n" },
+        {:line => [{:chord => "C"}, {:lyric => "I'll fly away, "}, {:chord => "C7"}, {:lyric => "oh, glory"}]},
+        {:line => [{:chord => "F"}, {:lyric => "I'll fly"}, {:chord => "C"}, {:lyric => "away"}]},
+        {:newline => "\n" }
+      ])
+    end
   end
 
 end
