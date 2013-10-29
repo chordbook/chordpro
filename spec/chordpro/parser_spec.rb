@@ -58,10 +58,10 @@ describe Chordpro::Parser do
   end
 
   describe 'directive' do
-    it { should parse('{title:Royals}').as(:name => 'title', :value => 'Royals') }
+    it { should parse('{title:Royals}').as(:directive => {:name => 'title', :value => 'Royals'}) }
     # FIXME: remove trailing space from value
-    it { should parse('{ title : Get Lucky }').as({:name => 'title', :value => 'Get Lucky '}) }
-    it { should parse('{soc}').as(:name => 'soc') }
+    it { should parse('{ title : Get Lucky }').as(:directive => {:name => 'title', :value => 'Get Lucky '}) }
+    it { should parse('{soc}').as(:directive => {:name => 'soc'}) }
     it { should_not parse('{st:oops') }
   end
 
@@ -97,15 +97,14 @@ describe Chordpro::Parser do
   describe 'song' do
     it do
       song = "{title: I'll Fly Away}\n\n[C]I'll fly away, [C7]oh, glory\n[F]I'll fly [C]away\n"
-      should parse(song).as(:song => [
+      should parse(song).as({:song => [
         {:directive => {:name => "title", :value => "I'll Fly Away"}},
-        {:newline => "\n" },
-        {:newline => "\n" },
+        {:newline => "\n"},
+        {:newline => "\n"},
         {:line => [{:chord => "C"}, {:lyric => "I'll fly away, "}, {:chord => "C7"}, {:lyric => "oh, glory"}]},
-        {:line => [{:chord => "F"}, {:lyric => "I'll fly"}, {:chord => "C"}, {:lyric => "away"}]},
-        {:newline => "\n" }
-      ])
+        {:line => [{:chord => "F"}, {:lyric => "I'll fly "}, {:chord => "C"}, {:lyric => "away"}]}
+      ]})
+
     end
   end
-
 end

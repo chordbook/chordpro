@@ -16,20 +16,21 @@ module Chordpro
     rule(:value) { (rbrace.absent? >> any).repeat }
 
     rule(:directive) do
-      lbrace >> space >>
-      identifier.as(:name) >>
       (
-        space >> colon >> space >>
-        value.as(:value)
-      ).maybe >>
-      rbrace
+        lbrace >> space >>
+        identifier.as(:name) >>
+        (
+          space >> colon >> space >>
+          value.as(:value)
+        ).maybe >>
+        rbrace
+      ).as(:directive)
     end
-
     rule(:chord) { lbracket >> (rbracket.absent? >> any).repeat.as(:chord) >> rbracket }
     rule(:lyric) { (lbracket.absent? >> newline.absent? >> any).repeat(1).as(:lyric) }
     rule(:line)  { (chord | lyric).repeat(1).as(:line) >> newline.maybe }
 
-    rule(:song)  { directive | newline.as(:newline) | line }
+    rule(:song)  { (directive | newline.as(:newline) | line).repeat.as(:song) }
 
     root(:song)
   end
