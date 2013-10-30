@@ -24,7 +24,7 @@ module Chordpro
           value.as(:value)
         ).maybe >>
         rbrace
-      ).as(:directive)
+      ).as(:directive) >> newline.maybe
     end
     rule(:chord) { lbracket >> (rbracket.absent? >> any).repeat.as(:chord) >> rbracket }
     rule(:lyric) { (lbracket.absent? >> newline.absent? >> any).repeat(1).as(:lyric) }
