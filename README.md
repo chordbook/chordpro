@@ -1,6 +1,6 @@
 # Chordpro
 
-TODO: Write a gem description
+A ruby parser for the [chordpro](http://tenbyten.com/software/songsgen/help/HtmlHelp/files_reference.htm) song file format.
 
 ## Installation
 
@@ -18,7 +18,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+html = Chordpro.html(File.read('spec/fixtures/sunshine.crd'))
+```
 
 ## Contributing
 

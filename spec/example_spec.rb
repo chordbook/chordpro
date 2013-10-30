@@ -6,8 +6,7 @@ describe 'Examples' do
 
     describe name, :example => name do
       it 'matches the example' do
-        song = Chordpro::Parser.new.parse(File.read(file))
-        expected = Chordpro::HTML.new(song).to_s
+        expected = Chordpro.html(File.read(file))
         actual = File.read(file.gsub(/\.crd$/, '.html'))
 
         expect(expected).to eq(actual)
