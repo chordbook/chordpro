@@ -11,10 +11,18 @@ describe Chordpro::HTML do
     end
   end
 
+  it 'guards against xss in the title' do
+    expect(html('{title: <script>alert("oops");</script>}').to_s).to_not include('<script>')
+  end
+
   %w(subtitle st su).each do |name|
     it "renders h2 for #{name}" do
       expect(html("{#{name}:The Beatles}").to_s).to eq('<h2 class="subtitle">The Beatles</h2>')
     end
+  end
+
+  it 'guards against xss in the subtitle' do
+    expect(html('{subtitle: <script>alert("oops");</script>}').to_s).to_not include('<script>')
   end
 
   it "renders line" do
@@ -22,6 +30,10 @@ describe Chordpro::HTML do
       '<table><tr class="chords"><td>G7</td><td>C</td><td>G</td></tr>' +
       '<tr><td>I dreamed I </td><td>held you in my </td><td>arms</td></tr></table>'
     )
+  end
+
+  it 'guards against xss in chords and lyrics' do
+    expect(html('[<script>alert("oops");</script>]<script>alert("oops");</script>').to_s).to_not include('<script>')
   end
 
 end

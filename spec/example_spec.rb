@@ -6,10 +6,12 @@ describe 'Examples' do
 
     describe name, :example => name do
       it 'matches the example' do
-        expected = Chordpro.html(File.read(file))
-        actual = File.read(file.gsub(/\.crd$/, '.html'))
+        actual = Chordpro.html(File.read(file))
+        expected = File.read(file.gsub(/\.crd$/, '.html'))
 
-        expect(expected).to eq(actual)
+        File.open(file.gsub(/\.crd$/, '.html'), 'w') { |f| f << actual }
+
+        expect(actual).to eq(expected)
       end
     end
 

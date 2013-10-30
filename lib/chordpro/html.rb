@@ -1,17 +1,19 @@
-require 'nokogiri'
+require 'builder'
 
 module Chordpro
   class HTML
     def initialize(tree)
       @song = tree[:song]
+      @html = Builder::XmlMarkup.new
+      @song.each { |e| elements(e) }
     end
 
     def to_s
-      @song.map { |e| elements(e) }.flatten.join("\n")
+      @html.target!
     end
 
     def elements(element)
-      element.map do |key, value|
+      element.each do |key, value|
         send key, value
       end
     end
@@ -21,12 +23,12 @@ module Chordpro
     end
 
     def title(directive)
-      %Q|<h1 class="title">#{directive[:value]}</h1>|
+      @html.h1(:class => 'title') { |h1| h1.text! directive[:value].to_s }
     end
     alias_method :t, :title
 
     def subtitle(directive)
-      %Q|<h2 class="subtitle">#{directive[:value]}</h2>|
+      @html.h2(:class => 'subtitle') { |h2| h2.text! directive[:value].to_s }
     end
     alias_method :st, :subtitle
     alias_method :su, :subtitle
@@ -51,19 +53,26 @@ module Chordpro
       # ensure chords has same number of cells as lyrics
       chords[lyrics.size - 1] ||= nil if lyrics.size > 0
 
-      %Q|<table><tr class="chords">#{
-        chords.map {|l| "<td>#{l}</td>" }.join
-      }</tr><tr>#{
-        lyrics.map {|l| "<td>#{l}</td>" }.join
-      }</tr></table>|
+      @html.table do |table|
+        table.tr(:class => 'chords') do |tr|
+          chords.each do |chord|
+            tr.td {|td| td.text! chord.to_s }
+          end
+        end
+        table.tr do |tr|
+          lyrics.each do |lyric|
+            tr.td {|td| td.text! lyric.to_s }
+          end
+        end
+      end
     end
 
     def newline(_)
-      '<br>'
+      @html.br
     end
 
     def comment(directive)
-      %|<span class="comment">#{directive[:value]}</span>|
+      @html.span(directive[:value].to_s, :class => 'comment')
     end
     alias_method :c, :comment
 
