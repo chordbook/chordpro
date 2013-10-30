@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Chordpro::VERSION
   spec.authors       = ["Brandon Keepers"]
   spec.email         = ["brandon@opensoul.org"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{A ruby parser for the chordpro song file format.}
+  spec.description   = %q{A ruby parser for the chordpro song file format.}
+  spec.homepage      = "https://github.com/bkeepers/chordpro"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'parslet'
-  spec.add_dependency 'nokogiri'
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
