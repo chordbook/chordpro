@@ -6,10 +6,14 @@ describe 'Examples' do
 
     describe name, :example => name do
       it 'matches the example' do
+        html_file = file.gsub(/\.crd$/, '.html')
         actual = Chordpro.html(File.read(file))
-        expected = File.read(file.gsub(/\.crd$/, '.html'))
 
-        File.open(file.gsub(/\.crd$/, '.html'), 'w') { |f| f << actual }
+        # Allow overwriting the HTML fixture with the actual output. This is
+        # useful when the desired output format changes.
+        File.open(html_file, 'w') { |f| f << actual } if ENV['OVERWRITE']
+
+        expected = File.read(html_file)
 
         expect(actual).to eq(expected)
       end
