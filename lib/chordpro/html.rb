@@ -2,50 +2,40 @@ require 'builder'
 
 module Chordpro
   class HTML
-    def initialize(tree)
-      @song = tree[:song]
+    def initialize(song)
+      @song = song
       @html = Builder::XmlMarkup.new
-      @song.each { |e| elements(e) }
+      @song.accept(self)
     end
 
     def to_s
       @html.target!
     end
 
-    def elements(element)
-      element.each do |key, value|
-        send key, value
-      end
+    def visit_title(title)
+      @html.h1(:class => 'title') { |h1| h1.text! title }
     end
+    alias_method :visit_t, :visit_title
 
-    def directive(directive)
-      send directive[:name], directive if respond_to?(directive[:name])
+    def visit_subtitle(subtitle)
+      @html.h2(:class => 'subtitle') { |h2| h2.text! subtitle }
     end
+    alias_method :visit_st, :visit_subtitle
+    alias_method :visit_su, :visit_subtitle
 
-    def title(directive)
-      @html.h1(:class => 'title') { |h1| h1.text! directive[:value].to_s }
-    end
-    alias_method :t, :title
-
-    def subtitle(directive)
-      @html.h2(:class => 'subtitle') { |h2| h2.text! directive[:value].to_s }
-    end
-    alias_method :st, :subtitle
-    alias_method :su, :subtitle
-
-    def line(line)
+    def visit_line(line)
       chords = []
       lyrics = []
 
       line.each do |element|
-        if lyric = element[:lyric]
-          lyrics << lyric
-        elsif chord = element[:chord]
+        if element.is_a?(Lyric)
+          lyrics << element
+        elsif element.is_a?(Chord)
           if chords[lyrics.size]
-            chord << chord
+            chord << element
             lyrics << nil
           else
-            chords[lyrics.size] = chord
+            chords[lyrics.size] = element
           end
         end
       end
@@ -67,14 +57,14 @@ module Chordpro
       end
     end
 
-    def linebreak(_)
+    def visit_linebreak(_)
       @html.br
     end
 
-    def comment(directive)
-      @html.span(directive[:value].to_s, :class => 'comment')
+    def visit_comment(text)
+      @html.span(text, :class => 'comment')
     end
-    alias_method :c, :comment
+    alias_method :visit_c, :visit_comment
 
   end
 end

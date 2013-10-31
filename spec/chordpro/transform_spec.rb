@@ -11,6 +11,13 @@ describe Chordpro::Transform do
     its(:value) { should eq('Two of Us') }
   end
 
+  describe 'directive without a value' do
+    subject { transform.apply(:directive => {:name => 'soc'}) }
+
+    it { should be_kind_of(Chordpro::Directive) }
+    its(:name) { should eq('soc') }
+  end
+
   describe 'chord' do
     subject { transform.apply(:chord => 'G') }
 
@@ -43,6 +50,17 @@ describe Chordpro::Transform do
     it { expect(subject.parts.length).to eq(2) }
     it { expect(subject.parts[0]).to be_instance_of(Chordpro::Chord) }
     it { expect(subject.parts[1]).to be_instance_of(Chordpro::Lyric) }
+  end
+
+  describe 'song' do
+    subject do
+      transform.apply(:song => [
+        {:directive => {:name => 'title', :value => 'You Are My Sunshine'}},
+        {:line => [{:chord => 'G'}, {:lyric => 'You are my sunshine'}]}
+      ])
+    end
+
+    it { should be_kind_of(Chordpro::Song) }
   end
 
 end

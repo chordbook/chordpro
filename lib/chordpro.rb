@@ -11,6 +11,6 @@ require "chordpro/version"
 
 module Chordpro
   def self.html(string)
-    HTML.new(Parser.new.parse(string)).to_s
+    HTML.new(Transform.new.apply(Parser.new.parse(string))).to_s
   end
 end
