@@ -67,7 +67,7 @@ module Chordpro
       end
     end
 
-    def newline(_)
+    def linebreak(_)
       @html.br
     end
 
