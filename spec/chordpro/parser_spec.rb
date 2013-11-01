@@ -57,6 +57,11 @@ describe Chordpro::Parser do
     it { should_not parse('oops}') }
   end
 
+  describe 'comment' do
+    it { should parse("# ignore this") }
+    it { should_not parse("but you can't # ignore this") }
+  end
+
   describe 'directive' do
     it { should parse('{title:Royals}').as(:directive => {:name => 'title', :value => 'Royals'}) }
     # FIXME: remove trailing space from value
@@ -96,7 +101,7 @@ describe Chordpro::Parser do
 
   describe 'song' do
     it do
-      song = "{title: I'll Fly Away}\n\n[C]I'll fly away, [C7]oh, glory\n[F]I'll fly [C]away\n"
+      song = "# A song\n{title: I'll Fly Away}\n\n[C]I'll fly away, [C7]oh, glory\n[F]I'll fly [C]away\n"
       should parse(song).as({:song => [
         {:directive => {:name => "title", :value => "I'll Fly Away"}},
         {:linebreak => "\n"},
