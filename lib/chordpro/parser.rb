@@ -15,6 +15,8 @@ module Chordpro
     rule(:identifier) { match['a-z'].repeat(1) }
     rule(:value) { (rbrace.absent? >> any).repeat }
 
+    rule(:comment) { str('#') >> (newline.absent? >> any).repeat >> newline.maybe }
+
     rule(:directive) do
       (
         lbrace >> space >>
@@ -30,7 +32,7 @@ module Chordpro
     rule(:lyric) { (lbracket.absent? >> newline.absent? >> any).repeat(1).as(:lyric) }
     rule(:line)  { (chord | lyric).repeat(1).as(:line) >> newline.maybe }
 
-    rule(:song)  { (directive | newline.as(:linebreak) | line).repeat.as(:song) }
+    rule(:song)  { (comment | directive | newline.as(:linebreak) | line).repeat.as(:song) }
 
     root(:song)
   end
