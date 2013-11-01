@@ -99,11 +99,10 @@ describe Chordpro::Parser do
       song = "{title: I'll Fly Away}\n\n[C]I'll fly away, [C7]oh, glory\n[F]I'll fly [C]away\n"
       should parse(song).as({:song => [
         {:directive => {:name => "title", :value => "I'll Fly Away"}},
-        {:newline => "\n"},
+        {:linebreak => "\n"},
         {:line => [{:chord => "C"}, {:lyric => "I'll fly away, "}, {:chord => "C7"}, {:lyric => "oh, glory"}]},
         {:line => [{:chord => "F"}, {:lyric => "I'll fly "}, {:chord => "C"}, {:lyric => "away"}]}
       ]})
-
     end
   end
 end

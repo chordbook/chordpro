@@ -30,7 +30,7 @@ module Chordpro
     rule(:lyric) { (lbracket.absent? >> newline.absent? >> any).repeat(1).as(:lyric) }
     rule(:line)  { (chord | lyric).repeat(1).as(:line) >> newline.maybe }
 
-    rule(:song)  { (directive | newline.as(:newline) | line).repeat.as(:song) }
+    rule(:song)  { (directive | newline.as(:linebreak) | line).repeat.as(:song) }
 
     root(:song)
   end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Chordpro::HTML do
   def html(string)
-    Chordpro::HTML.new(Chordpro::Parser.new.parse(string))
+    Chordpro.html(string)
   end
 
   %w(title t).each do |name|
