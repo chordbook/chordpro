@@ -44,14 +44,18 @@ module Chordpro
       chords[lyrics.size - 1] ||= nil if lyrics.size > 0
 
       @html.table do |table|
-        table.tr(:class => 'chords') do |tr|
-          chords.each do |chord|
-            tr.td {|td| td.text! chord.to_s }
+        unless chords.empty?
+          table.tr(:class => 'chords') do |tr|
+            chords.each do |chord|
+              tr.td {|td| td.text! chord.to_s }
+            end
           end
         end
-        table.tr do |tr|
-          lyrics.each do |lyric|
-            tr.td {|td| td.text! lyric.to_s }
+        unless lyrics.empty?
+          table.tr do |tr|
+            lyrics.each do |lyric|
+              tr.td {|td| td.text! lyric.to_s }
+            end
           end
         end
       end
