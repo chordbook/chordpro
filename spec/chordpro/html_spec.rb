@@ -36,4 +36,10 @@ describe Chordpro::HTML do
     expect(html('[<script>alert("oops");</script>]<script>alert("oops");</script>').to_s).to_not include('<script>')
   end
 
+  it 'does not blow up with multiple chords in a row' do
+    expect(html('[G][C][D]')).to eq(
+      '<table><tr class="chords"><td>G</td><td>C</td><td>D</td></tr></table>'
+    )
+  end
+
 end

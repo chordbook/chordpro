@@ -32,7 +32,7 @@ module Chordpro
           lyrics << element
         elsif element.is_a?(Chord)
           if chords[lyrics.size]
-            chord << element
+            chords << element
             lyrics << nil
           else
             chords[lyrics.size] = element
@@ -44,14 +44,14 @@ module Chordpro
       chords[lyrics.size - 1] ||= nil if lyrics.size > 0
 
       @html.table do |table|
-        unless chords.empty?
+        if chords.any?
           table.tr(:class => 'chords') do |tr|
             chords.each do |chord|
               tr.td {|td| td.text! chord.to_s }
             end
           end
         end
-        unless lyrics.empty?
+        if lyrics.any?
           table.tr do |tr|
             lyrics.each do |lyric|
               tr.td {|td| td.text! lyric.to_s }
