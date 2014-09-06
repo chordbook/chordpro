@@ -10,7 +10,8 @@ module Chordpro
       '5' => '⁵',
       '6' => '⁶',
       '7' => '⁷',
-      '9' => '⁹'
+      '9' => '⁹',
+      'sus' => 'ˢᵘˢ'
     }
 
     Regex = /(#{Substitutions.keys.join('|')})/
