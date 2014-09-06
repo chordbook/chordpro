@@ -7,29 +7,29 @@ describe Chordpro::Transform do
     subject { transform.apply(:directive => {:name => 'title', :value => 'Two of Us'}) }
 
     it { should be_kind_of(Chordpro::Directive) }
-    its(:name) { should eq('title') }
-    its(:value) { should eq('Two of Us') }
+    it { expect(subject.name).to eq('title') }
+    it { expect(subject.value).to eq('Two of Us') }
   end
 
   describe 'directive without a value' do
     subject { transform.apply(:directive => {:name => 'soc'}) }
 
     it { should be_kind_of(Chordpro::Directive) }
-    its(:name) { should eq('soc') }
+    it { expect(subject.name).to eq('soc') }
   end
 
   describe 'chord' do
     subject { transform.apply(:chord => 'G') }
 
     it { should be_kind_of(Chordpro::Chord) }
-    its(:name) { should eq('G') }
+    it { expect(subject.name).to eq('G') }
   end
 
   describe 'chord' do
     subject { transform.apply(:chord => 'G') }
 
     it { should be_kind_of(Chordpro::Chord) }
-    its(:name) { should eq('G') }
+    it { expect(subject.name).to eq('G') }
   end
 
   describe 'linebreak' do
