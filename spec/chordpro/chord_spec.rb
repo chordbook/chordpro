@@ -7,13 +7,13 @@ describe Chordpro::Chord do
       'F#m' => 'F♯m',
       'Gaug7' => 'G+⁷',
       'Ddim7' => 'D°⁷',
-      'Csus9' => 'Csus⁹',
-      'Asus2' => 'Asus²',
-      'Esus4' => 'Esus⁴',
+      'Csus9' => 'Cˢᵘˢ⁹',
+      'Asus2' => 'Aˢᵘˢ²',
+      'Esus4' => 'Eˢᵘˢ⁴',
       'E5' => 'E⁵',
       'Cm6' => 'Cm⁶',
       'G7' => 'G⁷',
-      'Asus9' => 'Asus⁹'
+      'Asus9' => 'Aˢᵘˢ⁹'
     }.each do |input, output|
       it "replaces #{input.inspect} with #{output.inspect}" do
         expect(Chordpro::Chord.new(input).to_s).to eq(output)
