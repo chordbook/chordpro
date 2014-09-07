@@ -11,7 +11,11 @@ require "chordpro/transposer"
 require "chordpro/version"
 
 module Chordpro
+  def self.parse(text)
+    Transform.new.apply(Parser.new.parse(text))
+  end
+
   def self.html(string)
-    HTML.new(Transform.new.apply(Parser.new.parse(string))).to_s
+    HTML.new(parse(string)).to_s
   end
 end

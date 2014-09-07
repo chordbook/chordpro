@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chordpro::Transposer do
   let(:interval) { 2 }
   let(:fixture) { File.read(File.expand_path('../../fixtures/sunshine.crd', __FILE__)) }
-  let(:song) { Chordpro::Transform.new.apply(Chordpro::Parser.new.parse(fixture)) }
+  let(:song) { Chordpro.parse(fixture) }
   let(:transposer) { Chordpro::Transposer.new(song, interval) }
 
   describe "visit" do
