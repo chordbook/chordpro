@@ -7,6 +7,7 @@ require "chordpro/lyric"
 require "chordpro/parser"
 require "chordpro/song"
 require "chordpro/transform"
+require "chordpro/transposer"
 require "chordpro/version"
 
 module Chordpro
