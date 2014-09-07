@@ -22,7 +22,7 @@ module Chordpro
         lbrace >> space >>
         identifier.as(:name) >>
         (
-          space >> colon >> space >>
+          colon >>
           value.as(:value)
         ).maybe >>
         rbrace
