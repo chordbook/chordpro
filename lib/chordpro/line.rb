@@ -7,7 +7,12 @@ module Chordpro
     end
 
     def accept(visitor)
-      visitor.visit_line(self) if visitor.respond_to?(:visit_line)
+      parts = map { |part| part.accept(visitor) }
+      if visitor.respond_to?(:line)
+        visitor.line(self, parts)
+      else
+        Line.new(parts)
+      end
     end
   end
 end

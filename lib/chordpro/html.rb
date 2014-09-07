@@ -12,18 +12,18 @@ module Chordpro
       @html.target!
     end
 
-    def visit_title(title)
+    def title(title)
       @html.h1(:class => 'title') { |h1| h1.text! title }
     end
-    alias_method :visit_t, :visit_title
+    alias_method :t, :title
 
-    def visit_subtitle(subtitle)
+    def subtitle(subtitle)
       @html.h2(:class => 'subtitle') { |h2| h2.text! subtitle }
     end
-    alias_method :visit_st, :visit_subtitle
-    alias_method :visit_su, :visit_subtitle
+    alias_method :st, :subtitle
+    alias_method :su, :subtitle
 
-    def visit_line(line)
+    def line(line, parts)
       chords = []
       lyrics = []
 
@@ -61,14 +61,14 @@ module Chordpro
       end
     end
 
-    def visit_linebreak(_)
+    def linebreak(_)
       @html.br
     end
 
-    def visit_comment(text)
+    def comment(text)
       @html.span(text, :class => 'comment')
     end
-    alias_method :visit_c, :visit_comment
+    alias_method :c, :comment
 
   end
 end

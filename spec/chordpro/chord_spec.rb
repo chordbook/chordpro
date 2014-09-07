@@ -20,4 +20,18 @@ describe Chordpro::Chord do
       end
     end
   end
+
+  describe 'accept' do
+    let(:chord) { Chordpro::Chord.new("C") }
+    let(:visitor) { double(:visitor) }
+
+    it 'calls chord with chord' do
+      expect(visitor).to receive(:chord).with(chord).and_return('result')
+      expect(chord.accept(visitor)).to eq('result')
+    end
+
+    it 'does not blow up if object does not respond to chord' do
+      expect(chord.accept(visitor)).to be(chord)
+    end
+  end
 end

@@ -19,5 +19,9 @@ module Chordpro
     def to_s
       name.gsub(Regex) {|match| Substitutions[match] }
     end
+
+    def accept(visitor)
+      visitor.respond_to?(:chord) ? visitor.chord(self) : self
+    end
   end
 end

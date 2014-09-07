@@ -2,8 +2,7 @@ module Chordpro
   class Directive < Struct.new(:name, :value)
 
     def accept(visitor)
-      method = "visit_#{name}"
-      visitor.send(method, value) if visitor.respond_to?(method)
+      visitor.respond_to?(name) ? visitor.send(name, value) : self
     end
 
   end
