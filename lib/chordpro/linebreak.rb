@@ -1,7 +1,11 @@
 module Chordpro
   class Linebreak
     def accept(visitor)
-      visitor.linebreak(self) if visitor.respond_to?(:linebreak)
+      if visitor.respond_to?(:linebreak)
+        visitor.linebreak(self)
+      else
+        self
+      end
     end
   end
 end
