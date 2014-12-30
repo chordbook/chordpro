@@ -1,4 +1,9 @@
 module Chordpro
+  # Transpose a song by the given interval.
+  #
+  #   song = Chordpro.parse(file.read)
+  #   transposed_song = Chordpro::Transposer.new(song, 3).visit
+  #
   class Transposer
     def initialize(song, interval)
       @song = song

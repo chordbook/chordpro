@@ -31,6 +31,11 @@ module Chordpro
       visitor.respond_to?(:chord) ? visitor.chord(self) : self
     end
 
+    # Transpose to a new chord by the given interval.
+    #
+    # interval - number of steps to transpose as a positive or negative Integer.
+    #
+    # Returns a new Chord
     def transpose(interval)
       new_name = name.gsub(/([A-G][#b]?)/) do |match|
         interval.abs.times do
