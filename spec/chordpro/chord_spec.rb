@@ -34,4 +34,14 @@ describe Chordpro::Chord do
       expect(chord.accept(visitor)).to be(chord)
     end
   end
+
+  describe "==" do
+    it "is true if name is the same" do
+      expect(Chordpro::Chord.new("G")).to eq(Chordpro::Chord.new("G"))
+    end
+
+    it "is false if name is different" do
+      expect(Chordpro::Chord.new("G")).not_to eq(Chordpro::Chord.new("A"))
+    end
+  end
 end

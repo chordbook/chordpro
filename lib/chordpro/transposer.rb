@@ -1,27 +1,33 @@
-# https://github.com/patchfx/transpose_chords/blob/master/lib/transpose_chords.rb
 module Chordpro
   class Transposer
-    FLATS = %w(C Db D Eb E F Gb G Ab A Bb B)
-    SHARPS = %w(C C# D D# E F F# G G# A A# B)
+    NOTES = %w(C Cb C# D Db D# E Eb E# F Fb F# G Gb G# A Ab A# B Bb B#)
+
+    TRANSPOSITIONS = %w(Cb C C# Bb Cb C C C# D Db D D# C Db D D D# E Eb E F D Eb
+      E E E# F# E F F# Eb Fb F F F# G Gb G G# F Gb G G G# A Ab A A# G Ab A A A#
+      B Bb B C A Bb B B B# C#
+    )
 
     def initialize(song, interval)
       @song = song
       @interval = interval
-      @scale = SHARPS
     end
 
     def visit
       Song.new @song.accept(self)
     end
-    
+
     def chord(chord)
-      Chord.new(chord.name.gsub(/([A-G][#b]?)/) { |match|
-        @scale[(index(match) + @interval) % @scale.size]
-      })
+      Chord.new(transpose(chord))
     end
 
-    def index(name)
-      FLATS.index(name) || SHARPS.index(name)
+    def transpose(chord)
+      chord.name.gsub(/([A-G][#b]?)/) do |match|
+        @interval.abs.times do
+          index = NOTES.index(match)
+          match = TRANSPOSITIONS[3 * index - 2 + 3 + (@interval <=> 0)]
+        end
+        match
+      end
     end
   end
 end
