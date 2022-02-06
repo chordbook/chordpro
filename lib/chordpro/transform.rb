@@ -1,7 +1,8 @@
 module Chordpro
   class Transform < Parslet::Transform
     rule(:directive => {:name => simple(:name), :value => simple(:value)}) do
-      Chordpro::Directive.new(name.to_s, value.to_s)
+      directive_name = Directive.find(name) || Directive::Name.new(name.to_s)
+      Chordpro::Directive.new(directive_name, value.to_s)
     end
     rule(:directive => {:name => simple(:name)}) do
       Chordpro::Directive.new(name.to_s)

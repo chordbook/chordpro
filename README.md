@@ -41,7 +41,15 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-html = Chordpro.html(File.read('spec/fixtures/sunshine.crd'))
+contents = File.read('spec/fixtures/sunshine.crd')
+
+# Generate HTML from the chordpro song
+File.write('sunshine.html', Chordpro.html(contents))
+
+# Parse and inspect the chordpro song
+song = Chordpro.parse(contents)
+song.title # => "You Are My Sunshine"
+song.metadata.to_h # => {"title" => "You Are My Sunshine", "key" => "G"}
 ```
 
 ## Contributing
