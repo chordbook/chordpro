@@ -3,7 +3,7 @@ require "spec_helper"
 describe Chordpro::Directive do
   describe "accept" do
     let(:visitor) { double(:visitor) }
-    let(:directive) { Chordpro::Directive.new("title", "The Visitor")}
+    let(:directive) { Chordpro::Directive.new("title", "The Visitor") }
 
     it "calls method on visitor" do
       expect(visitor).to receive(:title).and_return("title")

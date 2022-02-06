@@ -1,6 +1,7 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 # Specify your gem's dependencies in chordpro.gemspec
 gemspec
 
-gem 'pry'
+gem "pry"
+gem "standardrb"

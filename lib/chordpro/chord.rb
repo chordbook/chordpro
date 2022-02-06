@@ -1,23 +1,23 @@
 module Chordpro
   class Chord < Struct.new(:name)
-    Substitutions = {
-      'b' => '♭',
-      '#' => '♯',
-      'aug' => '+',
-      'dim' => '°',
-      '2' => '²',
-      '4' => '⁴',
-      '5' => '⁵',
-      '6' => '⁶',
-      '7' => '⁷',
-      '9' => '⁹',
-      'sus' => 'ˢᵘˢ'
+    SUBSTITUTIONS = {
+      "b" => "♭",
+      "#" => "♯",
+      "aug" => "+",
+      "dim" => "°",
+      "2" => "²",
+      "4" => "⁴",
+      "5" => "⁵",
+      "6" => "⁶",
+      "7" => "⁷",
+      "9" => "⁹",
+      "sus" => "ˢᵘˢ"
     }
 
-    Regex = /(#{Substitutions.keys.join('|')})/
+    REGEX = /(#{SUBSTITUTIONS.keys.join('|')})/
 
     def to_s
-      name.gsub(Regex) {|match| Substitutions[match] }
+      name.gsub(REGEX) { |match| SUBSTITUTIONS[match] }
     end
 
     def accept(visitor)

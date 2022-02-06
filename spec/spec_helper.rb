@@ -1,1 +1,2 @@
-require 'chordpro'
+require "chordpro"
+require "pry"

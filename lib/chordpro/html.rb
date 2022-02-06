@@ -1,4 +1,4 @@
-require 'builder'
+require "builder"
 
 module Chordpro
   class HTML
@@ -13,12 +13,12 @@ module Chordpro
     end
 
     def title(title)
-      @html.h1(:class => 'title') { |h1| h1.text! title }
+      @html.h1(class: "title") { |h1| h1.text! title }
     end
     alias_method :t, :title
 
     def subtitle(subtitle)
-      @html.h2(:class => 'subtitle') { |h2| h2.text! subtitle }
+      @html.h2(class: "subtitle") { |h2| h2.text! subtitle }
     end
     alias_method :st, :subtitle
     alias_method :su, :subtitle
@@ -45,16 +45,16 @@ module Chordpro
 
       @html.table do |table|
         if chords.any?
-          table.tr(:class => 'chords') do |tr|
+          table.tr(class: "chords") do |tr|
             chords.each do |chord|
-              tr.td {|td| td.text! chord.to_s }
+              tr.td { |td| td.text! chord.to_s }
             end
           end
         end
         if lyrics.any?
           table.tr do |tr|
             lyrics.each do |lyric|
-              tr.td {|td| td.text! lyric.to_s }
+              tr.td { |td| td.text! lyric.to_s }
             end
           end
         end
@@ -66,9 +66,8 @@ module Chordpro
     end
 
     def comment(text)
-      @html.span(text, :class => 'comment')
+      @html.span(text, class: "comment")
     end
     alias_method :c, :comment
-
   end
 end

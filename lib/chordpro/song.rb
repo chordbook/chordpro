@@ -12,14 +12,14 @@ module Chordpro
     end
 
     def method_missing(method, *args)
-      if respond_to?(method)
+      if respond_to_missing?(method)
         metadata[method]
       else
         super
       end
     end
 
-    def respond_to?(method, include_all = false)
+    def respond_to_missing?(method, include_all = false)
       super || !!Directive.find(method)&.meta
     end
   end
