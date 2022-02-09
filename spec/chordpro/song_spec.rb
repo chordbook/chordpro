@@ -19,8 +19,13 @@ module Chordpro
         expect(song.metadata[:artist]).to eq(song.metadata["artist"])
       end
 
-      it "returns nil for unknown directive" do
+      it "returns nil for unknown directive with value" do
         song = Chordpro.parse("{foo: bar}")
+        expect(song.metadata["foo"]).to eq(nil)
+      end
+
+      it "returns nil for unknown directive" do
+        song = Chordpro.parse("{foo}")
         expect(song.metadata["foo"]).to eq(nil)
       end
 

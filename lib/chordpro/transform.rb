@@ -4,8 +4,10 @@ module Chordpro
       directive_name = Directive.find(name) || Directive::Name.new(name.to_s)
       Chordpro::Directive.new(directive_name, value.to_s)
     end
+
     rule(directive: {name: simple(:name)}) do
-      Chordpro::Directive.new(name.to_s)
+      directive_name = Directive.find(name) || Directive::Name.new(name.to_s)
+      Chordpro::Directive.new(directive_name)
     end
 
     rule(linebreak: simple(:x)) { Chordpro::Linebreak.new }
