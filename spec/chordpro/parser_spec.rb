@@ -20,6 +20,7 @@ describe Chordpro::Parser do
 
   describe "newline" do
     it { should parse("\n") }
+    it { should parse("\r\n") }
     it { should_not parse("x") }
   end
 

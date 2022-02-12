@@ -5,7 +5,7 @@ module Chordpro
     # Characters
     rule(:space) { match('\s').repeat }
     rule(:colon) { space >> str(":") >> space }
-    rule(:newline) { str("\n") }
+    rule(:newline) { (str("\r\n") | str("\n")) }
     rule(:lbrace) { str("{") }
     rule(:rbrace) { str("}") }
     rule(:lbracket) { str("[") }
