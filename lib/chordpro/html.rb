@@ -18,7 +18,9 @@ module Chordpro
     alias_method :t, :title
 
     def subtitle(subtitle)
-      @html.h2(class: "subtitle") { |h2| h2.text! subtitle }
+      unless subtitle.match(/^\s*$/)
+        @html.h2(class: "subtitle") { |h2| h2.text! subtitle }
+      end
     end
     alias_method :st, :subtitle
     alias_method :su, :subtitle
