@@ -19,6 +19,9 @@ describe Chordpro::HTML do
     it "renders h2 for #{name}" do
       expect(html("{#{name}:The Beatles}").to_s).to eq('<h2 class="subtitle">The Beatles</h2>')
     end
+    it "allows empty #{name}" do
+      expect(html("{#{name}: }").to_s).to eq('')
+    end
   end
 
   it "guards against xss in the subtitle" do
