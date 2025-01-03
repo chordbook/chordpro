@@ -5,6 +5,11 @@ module Chordpro
       Chordpro::Directive.new(directive_name, value.to_s)
     end
 
+    rule(directive: {name: simple(:name), value: []}) do
+      directive_name = Directive.find(name) || Directive::Name.new(name.to_s)
+      Chordpro::Directive.new(directive_name, "")
+    end
+
     rule(directive: {name: simple(:name)}) do
       directive_name = Directive.find(name) || Directive::Name.new(name.to_s)
       Chordpro::Directive.new(directive_name)
